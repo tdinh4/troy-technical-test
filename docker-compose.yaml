@@ -76,6 +76,8 @@ services:
       POSTGRES_USER: airflow
       POSTGRES_PASSWORD: airflow
       POSTGRES_DB: airflow
+    ports:
+      - '5433:5432'
     volumes:
       - postgres-db-volume:/var/lib/postgresql/data
     healthcheck:
@@ -83,6 +85,42 @@ services:
       interval: 5s
       retries: 5
     restart: always
+
+  dbsource:
+    image: postgres:13
+    restart: always
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 5s
+      retries: 5
+    environment: 
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=dbsource
+    ports:
+      - '5434:5432'
+    volumes:
+      # copy the sql script to create tables
+      - ./db/create_table_db_source.sql:/docker-entrypoint-initdb.d/create_table_db_source.sql
+      # copy the sql script to fill tables
+      - ./db/fill_table_db_source.sql:/docker-entrypoint-initdb.d/fill_table_db_source.sql
+  
+  dbtarget:
+    image: postgres:13
+    restart: always
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 5s
+      retries: 5
+    environment: 
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=dbtarget
+    ports:
+      - '5435:5432'
+    volumes:
+      # copy the sql script to create tables
+      - ./db/create_table_db_target.sql:/docker-entrypoint-initdb.d/create_table_db_target.sql
 
   redis:
     image: redis:latest
@@ -265,31 +303,6 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
-  
-  mysql:
-    image: mysql:latest
-    ports:
-        - 3307:3306
-    volumes:
-        - ./db/create_table_db_source.sql:/docker-entrypoint-initdb.d/create_table_db_source.sql
-        - ./db/fill_table_db_source.sql:/docker-entrypoint-initdb.d/fill_table_db_source.sql
-    environment:
-        MYSQL_ROOT_PASSWORD: root
-        MYSQL_DATABASE: dbsource
-        MYSQL_USER: admin
-        MYSQL_PASSWORD: admin
-   
-  mysql2:
-    image: mysql:latest
-    ports:
-        - 3308:3306
-    volumes:
-        - ./db/create_table_db_target.sql:/docker-entrypoint-initdb.d/create_table_db_target.sql
-    environment:
-        MYSQL_ROOT_PASSWORD: root
-        MYSQL_DATABASE: dbtarget
-        MYSQL_USER: admin 
-        MYSQL_PASSWORD: admin
 
 volumes:
   postgres-db-volume:
