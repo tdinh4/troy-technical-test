@@ -10,5 +10,3 @@ cleanup:
 	docker-compose down
 	docker-compose down --volumes --remove-orphans
 	docker-compose down --volumes --rmi all
-	rm -rf __pycache__
-	rm -rf venv
