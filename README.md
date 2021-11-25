@@ -7,7 +7,7 @@ These instructions will get you a copy of the project up and running on your loc
 - Clone this repo
 - Install the prerequisites
 - Run the service
-- Check http://localhost:8080
+- Check http://localhost:5884
 - Trigger DAG for transferring the content of Source Database X to Target Database Y
 - Inspect Database 
 - Done! :tada:
@@ -19,13 +19,20 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Ussage
 
-Run the web service airflow and setup postgred DB with docker
+1. Clone the project to local machine and go to folder
 
 ```
 git clone https://github.com/tdinh4/troy-technical-test.git
-cd troy-technical-test/
+cd troy-technical-test
+```
+
+2. Run `make setup` to setup Airflow service with Docker, setup postgres database and add database connection in Airflow 
+
+```
 make setup
 ```
+
+3. Note: The postgres database airflow will use port at 5433, source postgres database will use port at 5434 and target postgres database will use port at 5435. If these port is being used, please change it to a different port in `docker-compose.yaml` postgres service.
 
 Check http://localhost:5884/
 
