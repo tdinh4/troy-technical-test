@@ -91,6 +91,19 @@ To stop and delete containers, delete volumes with database data and download im
 make cleanup
 ```
 
+## Other Notes
+
+### What I have completed
+1. Setup complete data pipline using Docker and Airflow with local development Setup script
+2. Init two postgres database in docker-compose setup.
+3. Add database connection through CLI docker.
+4. Using PostgresHook in Airflow to connect and transfer data between two database.
+
+### What can be improved
+1. Write unit test for database back-end
+2. Check Data quality before loading to new databse
+3. Build service health check for ingesting data (grafana, etc.)
+
 ## Credits
 
 - [Apache Airflow Docker](https://airflow.apache.org/docs/apache-airflow/stable/start/docker.html)
