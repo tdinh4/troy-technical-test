@@ -7,7 +7,7 @@ setup:
 	sleep 45s
 	@echo "===========Adding DB connections to Airflow==========="
 	docker-compose run airflow-worker airflow connections add 'db_source' --conn-uri 'psql://admin:admin@dbsource:5432/dbsource' && docker-compose run airflow-worker airflow connections add 'db_target' --conn-uri 'psql://admin:admin@dbtarget:5432/dbtarget'
-	@echo "===========Environment Ready. Access Airflow at localhost:8080"
+	@echo "===========Environment Ready. Access Airflow at localhost:5884"
 cleanup:
 	docker-compose down
 	docker-compose down --volumes --remove-orphans
