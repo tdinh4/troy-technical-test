@@ -26,7 +26,7 @@ git clone https://github.com/tdinh4/troy-technical-test.git
 cd troy-technical-test
 ```
 
-2. Run `make setup` to setup Airflow service with Docker, setup postgres database and add database connection in Airflow 
+2. Run `make setup` to setup Airflow service with Docker, setup postgres database and add database connection in Airflow. Remember!! At least 4.0GB Memory required in Docker to setup Airflow.
 
 ```
 make setup
